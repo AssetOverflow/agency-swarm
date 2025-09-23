@@ -46,8 +46,10 @@ pip install -U agency-swarm
 ### Compatibility
 - **Python**: 3.12+
 - **Model backends:**
-  - **OpenAI (native):** GPT-5 family, GPT-4o, etc.
-  - **Via LiteLLM (router):** Anthropic (Claude), Google (Gemini), Azure OpenAI, **OpenRouter (gateway)**, etc.
+    ◦ **OpenAI (native):** GPT-5 family, GPT-4o, etc.
+    ◦ **Via LiteLLM (router):** Anthropic (Claude), Google (Gemini), Azure OpenAI, OpenRouter, etc.
+    ◦ **Direct xAI (Grok) [NEW]:** Using official xai-sdk for Grok models.
+    ◦ **Direct Groq [NEW]:** OpenAI API-compatible, just set `base_url`/`api_key`.
 - **OS**: macOS, Linux, Windows
 
 If you hit environment issues, see the [Installation guide](https://agency-swarm.ai/welcome/installation).
@@ -58,9 +60,41 @@ If you hit environment issues, see the [Installation guide](https://agency-swarm
     - Create a `.env` file with `OPENAI_API_KEY=your_key` (auto-loaded), or export it in your shell:
     ```bash
     export OPENAI_API_KEY="YOUR_API_KEY"
+    export GROQ_API_KEY="YOUR_API_KEY"
+    export XAI_API_KEY="YOUR_API_KEY"
     ```
 
-2. **Create Tools**:
+2a. **Model Config**:
+Added configurations for providers xAI and Groq. Configurations for setting up agent with one of these:
+
+    # For xAI (Direct integration):
+    from agency_swarm import XAIProvider
+
+    xai_agent = Agent(
+        name="XAIAgent",
+        model=XAIProvider().get_model("grok-4"),
+        model_settings=ModelSettings(...)
+    )
+
+    # For Groq (OpenAI-compatible):
+    from agency_swarm import GroqProvider
+
+    groq_agent = Agent(
+        name="GroqAgent",
+        model=GroqProvider().get_model("mixtral-8x7b-32768"),
+        model_settings=ModelSettings(...)
+    )
+
+    # Automatic provider selection (uses first available):
+    from agency_swarm import get_model_from_provider
+
+    auto_agent = Agent(
+        name="AutoAgent",
+        model=get_model_from_provider(),  # Uses first available provider
+        model_settings=ModelSettings(...)
+    )
+
+2b. **Create Tools**:
 Define tools using the modern `@function_tool` decorator (recommended), or extend `BaseTool` (compatible):
     ```python
     from agency_swarm import function_tool
@@ -69,6 +103,7 @@ Define tools using the modern `@function_tool` decorator (recommended), or exten
     def my_custom_tool(example_field: str) -> str:
         """A brief description of what the custom tool does."""
         return f"Result: {example_field}"
+
     ```
 
     or with `BaseTool`:

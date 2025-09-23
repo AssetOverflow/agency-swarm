@@ -21,6 +21,9 @@ This directory contains runnable examples demonstrating key features of Agency S
 - **`agency_visualization_demo.py`** – Interactive HTML visualization
 - **`interactive/terminal_demo.py`** – Terminal UI chat interface
 - **`interactive/copilot_demo.py`** – Copilot UI chat interface
+- `test_xai_provider.py` (see tests/): Smoke test for direct xAI/Grok model usage via xai-sdk.
+- ***You can adapt `open_source_models.py` to use `XAIProvider` as in the root README example.***
+
 
 ## Integration
 - **`fastapi_integration/`** – FastAPI server and client examples

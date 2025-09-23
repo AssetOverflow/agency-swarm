@@ -25,6 +25,9 @@ from .context import MasterContext  # noqa: E402
 from .hooks import PersistenceHooks  # noqa: E402
 from .integrations.fastapi import run_fastapi  # noqa: E402
 from .integrations.mcp_server import run_mcp  # noqa: E402
+from .integrations.groq_provider import GroqProvider  # noqa: E402
+from .integrations.provider_utils import get_available_providers, select_provider, get_model_from_provider  # noqa: E402
+from .integrations.xai_provider import XAIProvider  # noqa: E402
 from .tools import BaseTool  # noqa: E402
 from .tools.send_message import SendMessage  # noqa: E402
 from .utils.thread import ThreadManager  # noqa: E402
@@ -40,6 +43,11 @@ __all__ = [
     "SendMessage",
     "run_fastapi",
     "run_mcp",
+    "GroqProvider",
+    "XAIProvider",
+    "get_available_providers",
+    "select_provider",
+    "get_model_from_provider",
     # Re-exports from Agents SDK
     "ModelSettings",
     "OpenAIChatCompletionsModel",
